@@ -1,25 +1,28 @@
-function plot_evolute(curve)
-  t = linspace(1, 10, 100);
-  x = curve(:,1)';
-  dx = gradient(x);
-  ddx = gradient(dx);
+function plot_evolute(x, y, t)
+    x_values = x(t);
+    y_values = y(t);
 
-  plot(x(:,1), x(:,2), 'b', 'LineWidth', 1);
-  hold on;
+    dx_dt = gradient(x_values, t);
+    dy_dt = gradient(y_values, t);
 
-  step = 10;
-  for i = 1:step:length(t)-step
-    K = (dx(i:i+step-1,:).*ddx(i:i+step-1,2) - ...
-         ddx(i:i+step-1,1).*dx(i:i+step-1,2)) ./ ...
-        (dx(i:i+step-1,1).^2 + dx(i:i+step-1,2).^2).^1.5;
+    d2x_dt2 = gradient(dx_dt, t);
+    d2y_dt2 = gradient(dy_dt, t);
 
-    evolute_x = x(i:i+step-1,1) - dx(i:i+step-1,2) ./ K;
-    evolute_y = x(i:i+step-1,2) + dx(i:i+step-1,1) ./ K;
+	  curv = (dx_dt .^ 2 + dy_dt .^ 2) ./ (dx_dt .* d2y_dt2 - d2x_dt2 .* dy_dt);
 
-    h = plot(evolute_x, evolute_y, 'r', 'LineWidth', 1.5);
-    pause(0.05);
-  end
+    figure;
 
-  hold off;
-endfunction
+    p = plot(x_values, y_values, 'b', 'LineWidth', 2);
+    hold on;
+    for i=1:length(t)
+      scatter(x_values(i) - curv(i) .* dy_dt(i), y_values(i) + curv(i) .* dx_dt(i), 'r', 'LineWidth', 2);
+      pause(0.05);
+    endfor
+    hold off;
 
+    title('curve & evolute');
+    xlabel('x');
+    ylabel('y');
+    legend('curve', 'evalute');
+	axis equal;
+end
