@@ -1,6 +1,6 @@
 function plot_animated_involute(curve)
   t = linspace(0, 2*pi, 100);  
-  x = curve(t)';
+  x = curve(:,1)';
   dx = gradient(x); 
   ddx = gradient(dx);  
 
