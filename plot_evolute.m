@@ -18,7 +18,6 @@ function plot_evolute(curve)
 
     h = plot(evolute_x, evolute_y, 'r', 'LineWidth', 1.5);
     pause(0.05);
-    delete(h);
   end
 
   hold off;
