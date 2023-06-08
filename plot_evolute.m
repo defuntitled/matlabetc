@@ -1,6 +1,6 @@
 function plot_evolute(curve)
   t = linspace(1, 10, 100);
-  x = curve(t)';
+  x = curve(:,1)';
   dx = gradient(x);
   ddx = gradient(dx);
 
